@@ -63,29 +63,30 @@ def option_callback(func: Callable) -> Callable:  # type: ignore
     return wrapper
 
 
-@option_callback
-def install_shell_integration(*_args: Any) -> None:
-    """
-    Installs shell integration. Currently only supports ZSH and Bash.
-    Allows user to get shell completions in terminal by using hotkey.
-    Replaces current "buffer" of the shell with the completion.
-    """
-    # TODO: Add support for Windows.
-    # TODO: Implement updates.
+def install_shell_integration(shell_script):
     shell = os.getenv("SHELL", "")
     if shell == "/bin/zsh":
-        typer.echo("Installing ZSH integration...")
+        typer.echo("Installing Zsh integration...")
         with open(os.path.expanduser("~/.zshrc"), "a", encoding="utf-8") as file:
             file.write(zsh_integration)
     elif shell == "/bin/bash":
         typer.echo("Installing Bash integration...")
         with open(os.path.expanduser("~/.bashrc"), "a", encoding="utf-8") as file:
             file.write(bash_integration)
+    elif "fish" in shell.lower():
+        typer.echo("Installing Fish integration...")
+        fish_config_path = os.path.expanduser("~/.config/fish/config.fish")
+        with open(fish_config_path, "a", encoding="utf-8") as file:
+            file.write(fish_integration)
+    elif "powershell" in shell.lower():
+        # Add PowerShell integration logic for both Windows PowerShell and PowerShell 7
+        typer.echo("Installing PowerShell integration...")
+        with open(os.path.expanduser("~/.profile"), "a", encoding="utf-8") as file:
+            file.write(powershell_integration)
     else:
-        raise UsageError("ShellGPT integrations only available for ZSH and Bash.")
+        raise UsageError("ShellGPT integrations only available for Zsh, Bash, Fish, and PowerShell.")
 
     typer.echo("Done! Restart your shell to apply changes.")
-
 
 @option_callback
 def get_sgpt_version(*_args: Any) -> None:
