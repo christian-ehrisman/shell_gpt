@@ -1,6 +1,7 @@
 import os
 import platform
 import shlex
+import subprocess
 from tempfile import NamedTemporaryFile
 from typing import Any, Callable
 
@@ -8,7 +9,7 @@ import typer
 from click import BadParameter, UsageError
 
 from sgpt.__version__ import __version__
-from sgpt.integration import bash_integration, zsh_integration
+from sgpt.integration import bash_integration, zsh_integration, powershell_integration, fish_integration
 
 
 def get_edited_prompt() -> str:
@@ -63,6 +64,15 @@ def option_callback(func: Callable) -> Callable:  # type: ignore
     return wrapper
 
 
+def powershell_profile_path():
+    command = 'Write-Host $PROFILE'
+    result = subprocess.run(["powershell", "-Command", command], capture_output=True)
+    profile_path = result.stdout.decode().strip()
+    if os.path.exists(profile_path):
+        return profile_path
+    else:
+        return None
+
 def install_shell_integration(shell_script):
     shell = os.getenv("SHELL", "")
     if shell == "/bin/zsh":
@@ -79,9 +89,8 @@ def install_shell_integration(shell_script):
         with open(fish_config_path, "a", encoding="utf-8") as file:
             file.write(fish_integration)
     elif "powershell" in shell.lower():
-        # Add PowerShell integration logic for both Windows PowerShell and PowerShell 7
         typer.echo("Installing PowerShell integration...")
-        with open(os.path.expanduser("~/.profile"), "a", encoding="utf-8") as file:
+        with open(get_powershell_profile_path(), "a", encoding="utf-8") as file:
             file.write(powershell_integration)
     else:
         raise UsageError("ShellGPT integrations only available for Zsh, Bash, Fish, and PowerShell.")
