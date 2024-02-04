@@ -90,7 +90,7 @@ def install_shell_integration(shell_script):
             file.write(fish_integration)
     elif "powershell" in shell.lower():
         typer.echo("Installing PowerShell integration...")
-        with open(get_powershell_profile_path(), "a", encoding="utf-8") as file:
+        with open(powershell_profile_path(), "a", encoding="utf-8") as file:
             file.write(powershell_integration)
     else:
         raise UsageError("ShellGPT integrations only available for Zsh, Bash, Fish, and PowerShell.")
