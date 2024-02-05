@@ -35,9 +35,10 @@ function _sgpt_fish
 end
 
 bind \cl _sgpt_fish
+# Shell-GPT integration FISH v0.1
 """
 powershell_integration = """
-# Shell-GPT integration PowerShell v0.1
+# Shell-GPT integration POWERSHELL v0.1
 function Invoke-SGPT_PowerShell {
     if ($null -ne $Host.UI.RawUI) {
         $originalCursorPosition = $Host.UI.RawUI.CursorPosition
@@ -67,4 +68,5 @@ function Invoke-SGPT_PowerShell {
     }
 
 Set-PSReadlineKeyHandler -Key "Ctrl+L" -ScriptBlock { Invoke-SGPT_PowerShell }
+# Shell-GPT integration PowerShell v0.1
 """
