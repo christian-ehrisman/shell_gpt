@@ -25,18 +25,6 @@ zle -N _sgpt_zsh
 bindkey ^l _sgpt_zsh
 # Shell-GPT integration ZSH v0.2
 """
-fish_integration = """
-# Shell-GPT integration FISH v0.1
-function _sgpt_fish
-    if test -n "$CMDLINE" -o -n "$cmdline"
-        set CMDLINE (sgpt --shell <<< "$CMDLINE" --no-interaction)
-        set_cursor -p (string length -c "$CMDLINE")
-    end
-end
-
-bind \cl _sgpt_fish
-# Shell-GPT integration FISH v0.1
-"""
 powershell_integration = """
 # Shell-GPT integration POWERSHELL v0.1
 function Invoke-SGPT_PowerShell {
