@@ -8,11 +8,14 @@ __pycache__/
 venv/
 env/
 *.env
+scripts/
+pyenv.cfg
 
 # IDE
 .vscode/
 .idea/
-
+.gitignore
+.mypy*
 # Dependency directories
 lib/
 libs/
